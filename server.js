@@ -22,7 +22,9 @@ app.listen(config.port,function (err) {
 
 //code for routes
 var api = require('./BackEnd/routes/route');
+var item = require('./BackEnd/routes/itemRoute');
 app.use('/api',api);
+app.use('/item',item);
 
 
 //code for middleware
