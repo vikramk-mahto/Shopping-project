@@ -5,9 +5,16 @@ var cors = require("cors");
 var morgan = require("morgan");
 var path = require("path");
 var config = require("./config/config");
+var api = require('./BackEnd/routes/route');
+var items = require('./BackEnd/routes/itemRoute');
+var cookieparser = require('cookie-parser')
+
 
 
 var app = express();
+app.use(express.static(__dirname + '/public'));
+app.set('view engine', 'ejs');
+app.set('views',path.join(__dirname,'views'));
 
 
 //code for server start
@@ -20,22 +27,25 @@ app.listen(config.port,function (err) {
 });
 
 
-//code for routes
-var api = require('./BackEnd/routes/route');
-var item = require('./BackEnd/routes/itemRoute');
-app.use('/api',api);
-app.use('/item',item);
 
 
 //code for middleware
 app.use(bodyparser.urlencoded({extended:true}));
 app.use(bodyparser.json());
+app.use(bodyparser());
 app.use(morgan('dev'));
+app.use(cors());
+app.use(cookieparser());
+
+//code for routes
 
 
-// app.use(express.static(__dirname + '/public'));
 
-app.get('*',function (req, res) {
+app.use('/route',api);
+app.use('/newItem',items);
+
+
+app.get('/',function (req, res) {
     res.sendFile(__dirname + '/public/FrontEnd/views/index.html');
 })
 
@@ -50,3 +60,5 @@ mongoose.connection.on('connected',function (err) {
     }
 })
 
+
+module.exports = app;

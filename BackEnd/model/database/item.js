@@ -38,7 +38,7 @@ var itemSchema = new Schema({
         small: {type: String, required: false},
     },
     item_stock:{
-        type:String,
+        type:Number,
         required:true
     },
     isActive:{
